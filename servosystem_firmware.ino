@@ -187,8 +187,7 @@ void read_request(){
         get_k();
       }
     }
-    
-    //Serial.println(request);
+
   }
 }
 int sign(float val){
@@ -235,8 +234,6 @@ void send_response(){
   else if (sin_phi_flag || square_flag || triangle_flag){
     answer = String("#OUT ")+time_dot + " "+ target_angle +" "+ current_angle ;
     Serial.println(answer);
-    // answer = String(time_dot/1000) + " "+ target_angle;
-    // Serial.println(answer);
   }
 }
 
@@ -279,7 +276,6 @@ void move(){
 
   u = int(u*255/12);
   calc_fric_comp();
-  //u = 10;
   if (u>=0) {
     analogWrite(IN1, 255);
     analogWrite(IN2, 255-u);
