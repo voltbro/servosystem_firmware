@@ -25,7 +25,7 @@ float kx = 0;
 float kv = 0;
 
 float target_angle, current_angle, prev_current_angle;
-float vel_current;
+float vel_model, vel_current;
 
 unsigned long t, time_dot;
 
@@ -214,11 +214,18 @@ void calc_angle_vel(){
   vel_current = (current_angle - prev_current_angle)*1000;
   prev_current_angle = current_angle;
 
-  if (sin_phi_flag) {target_angle = amplitude*sin((2*PI*freq*(float(time_dot)/1000.0)));}
-  if(square_flag){target_angle = amplitude*sign(sin((2*PI*freq*(float(time_dot)/1000.0))));}
+  if (sin_phi_flag) {
+    target_angle = amplitude*sin((2*PI*freq*(float(time_dot)/1000.0)));
+    vel_model = amplitude*2*PI*freq*cos((2*PI*freq*(float(time_dot)/1000.0)));
+    }
+  if(square_flag){
+    target_angle = amplitude*sign(sin((2*PI*freq*(float(time_dot)/1000.0))));
+    vel_model = 0;
+    }
   if(triangle_flag){
     float t_tmp = float((time_dot/1000.0));
     target_angle = amplitude - (2*amplitude/PI)*acos(cos(2*PI*freq*t_tmp-PI/2));   
+    vel_model = (-4*amplitude*freq)*sin(2*PI*freq*t_tmp-PI/2)/sqrt(1-sq(cos(2*PI*freq*t_tmp-PI/2))); 
     }
 }
 
@@ -265,7 +272,7 @@ void move(){
   }
   else if(sin_phi_flag || square_flag || triangle_flag){
     time_dot = millis() - t;
-    u = kx* (target_angle - current_angle ) - kv * vel_current; 
+    u = kx* (target_angle - current_angle ) + kv * (vel_model - vel_current); 
   }
  
   
