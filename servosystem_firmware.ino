@@ -239,7 +239,7 @@ void send_response(){
     Serial.println(answer);
   }
   else if (sin_phi_flag || square_flag || triangle_flag){
-    answer = String("#OUT ")+time_dot + " "+ target_angle +" "+ current_angle ;
+    answer = String("#OUT ")+time_dot + " "+ target_angle +" "+ current_angle+" "+ vel_model ;
     Serial.println(answer);
   }
 }
