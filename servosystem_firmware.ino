@@ -231,11 +231,11 @@ void calc_angle_vel(){
 
 void send_response(){
   if (step_flag){
-    answer = String("#OUT ")+time_dot + " " + target_angle +" "+ current_angle;
+    answer = String("#OUT ")+time_dot + " " + target_angle +" "+ current_angle+" "+ vel_model;
     Serial.println(answer);
   }
   else if (sin_flag){
-    answer = String("#OUT ")+time_dot + " "+ u_send +" "+ current_angle ;
+    answer = String("#OUT ")+time_dot + " "+ u_send +" "+ current_angle+" "+ vel_model ;
     Serial.println(answer);
   }
   else if (sin_phi_flag || square_flag || triangle_flag){
@@ -264,11 +264,13 @@ void move(){
   if (step_flag ){
     time_dot = millis() - t;
     u = kx* (target_angle - current_angle ) - kv * vel_current; 
+    vel_model = 0;
   }
   else if (sin_flag){
     time_dot = millis() - t;
     u_send =amplitude*sin((2*PI*freq*(float(time_dot)/1000.0)));
     u = -kx * current_angle + u_send;
+    vel_model = 0;
   }
   else if(sin_phi_flag || square_flag || triangle_flag){
     time_dot = millis() - t;
