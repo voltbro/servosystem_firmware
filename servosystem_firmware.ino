@@ -5,7 +5,6 @@
 #define IN2 PA9
 #define SLEEPn PB3
 #define USR_BTN PC13
-#define VREF PA4
 
 #define MOSI PC12
 #define MISO PC11
@@ -45,20 +44,18 @@ float angle_tmp;
 float pwm_gain = 1;
 int pwm_offset = 0;
 
+
+
 void setup() {
 
   pinMode(SLEEPn, OUTPUT);
   pinMode(IN1, OUTPUT);
   pinMode(IN2, OUTPUT);
   pinMode(LED2, OUTPUT);
-  pinMode(VREF, OUTPUT);
  
   digitalWrite(SLEEPn, HIGH);
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, LOW);
-  analogWriteResolution(12);
-  analogWrite(VREF, 2500);
-  analogWriteFrequency(25000);
 
   Serial.begin(500000);
 
@@ -286,15 +283,15 @@ void move(){
   else if (u <= -12)
     u = -12;
 
-  u = int(u*4096/12);
+  u = int(u*255/12);
   calc_fric_comp();
   if (u>=0) {
-    analogWrite(IN1, 4096);
-    analogWrite(IN2, 4096-u);
+    analogWrite(IN1, 255);
+    analogWrite(IN2, 255-u);
     }
   else {
-    analogWrite(IN2, 4096);
-    analogWrite(IN1, 4096-abs(u));
+    analogWrite(IN2, 255);
+    analogWrite(IN1, 255-abs(u));
   }
   }
 }
